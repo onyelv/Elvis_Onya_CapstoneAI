@@ -33,6 +33,7 @@ st.markdown("""
     .stTextInput > label, .stSelectbox > label { color: #f0e6d3 !important; font-weight: 600; }
     .stTextInput > div > div > input { background: rgba(255,255,255,0.95) !important; border: 1px solid rgba(245,200,66,0.4) !important; border-radius: 8px !important; color: #1a0a00 !important; }
     .stSelectbox > div > div { background: rgba(255,255,255,0.1) !important; border: 1px solid rgba(245,200,66,0.4) !important; border-radius: 8px !important; color: #f0e6d3 !important; }
+    .stSelectbox svg { fill: #f5c842 !important; }
     .stButton > button { background: linear-gradient(135deg, #8b1a1a, #c0392b) !important; color: #f5c842 !important; font-family: 'Playfair Display', serif !important; font-size: 1.1rem !important; font-weight: 700 !important; border: 2px solid #f5c842 !important; border-radius: 50px !important; padding: 0.6rem 3rem !important; width: 100% !important; }
     .divider { border: none; border-top: 1px solid rgba(245,200,66,0.2); margin: 1.5rem 0; }
     footer { visibility: hidden; }
@@ -55,35 +56,53 @@ if "craving" not in st.session_state:
     st.session_state.craving = ""
 if "cuisine" not in st.session_state:
     st.session_state.cuisine = ""
+if "saved" not in st.session_state:
+    st.session_state.saved = False
 
 # Sidebar
 with st.sidebar:
     st.markdown("### 📖 Saved Recipes")
     favorites = load_favorites()
     if favorites:
-        for item in favorites:
+        for i, item in enumerate(favorites):
             with st.expander(f"🍽️ {item['craving']}"):
                 st.write(item["recipe"])
+                if st.button("🗑️ Delete", key=f"delete_{i}"):
+                    favorites.pop(i)
+                    with open(FAVORITES_FILE, "w") as f:
+                        json.dump(favorites, f, indent=2)
+                    st.rerun()
     else:
         st.write("No saved recipes yet.")
 
 # Main inputs
 craving = st.text_input("🥘 What are you craving, or what ingredients do you have?")
+
 cuisine = st.selectbox(
     "🌍 Cuisine preference",
-    ["West African", "Caribbean", "Mediterranean", "Asian", "Latin American", "Any"]
+    ["Select a cuisine...", "French", "Italian", "West African", "Caribbean", "Mediterranean", "Asian", "Latin American", "Middle Eastern", "Indian", "American", "Any", "Other"]
 )
-dietary = st.text_input("🥗 Any dietary notes? (e.g. halal, vegetarian, nut-free, dairy-free)")
+if cuisine == "Other":
+    other_cuisine = st.text_input("✏️ Please specify your cuisine:")
+    cuisine = other_cuisine if other_cuisine else "Any"
+
+dietary = st.selectbox(
+    "🥗 Dietary preference",
+    ["Select dietary preference...", "None", "Vegetarian", "Vegan", "Raw Vegan", "Keto Diet", "Kosher", "Nut-free", "Dairy-free", "Gluten-free", "Halal"]
+)
 
 if st.button("✨ Get My Recipe"):
-    if craving:
+    if craving and cuisine != "Select a cuisine...":
         with st.spinner("Chef is crafting your recipe..."):
             prompt = build_recipe_prompt(craving, cuisine, dietary)
             st.session_state.recipe = get_recipe(prompt)
             st.session_state.craving = craving
             st.session_state.cuisine = cuisine
-    else:
+            st.session_state.saved = False
+    elif not craving:
         st.warning("Please tell the chef what you are craving first!")
+    else:
+        st.warning("Please select a cuisine preference!")
 
 # Show recipe and save button if recipe exists
 if st.session_state.recipe:
@@ -93,7 +112,11 @@ if st.session_state.recipe:
             {st.session_state.recipe.replace(chr(10), '<br>').replace('**', '<b>').replace('*', '•')}
         </div>
     """, unsafe_allow_html=True)
-    if st.button("💾 Save this recipe"):
-        save_favorite(st.session_state.craving, st.session_state.cuisine, st.session_state.recipe)
-        st.success("✅ Recipe saved! Check the sidebar.")
-        st.rerun()
+    if not st.session_state.saved:
+        if st.button("💾 Save this recipe"):
+            save_favorite(st.session_state.craving, st.session_state.cuisine, st.session_state.recipe)
+            st.session_state.saved = True
+            st.success("✅ Recipe saved! Check the sidebar.")
+            st.rerun()
+    else:
+        st.success("✅ Recipe already saved!")
