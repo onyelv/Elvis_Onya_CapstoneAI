@@ -1,4 +1,6 @@
-# 🍲 Chef's Helper — AI-Powered Recipe Assistant## 🎥 Demo
+# 🍲 Chef's Helper — AI-Powered Recipe Assistant
+
+## 🎥 Demo
 
 Chef's Helper in action — enter what you're craving or the ingredients you have, pick a cuisine and dietary preference, and get an AI-generated recipe instantly.
 
