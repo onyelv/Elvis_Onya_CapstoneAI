@@ -68,6 +68,13 @@ flowchart TD
     class H,I,J,K outputStep
 ​```
 
+
+
+
+
+
+
+
 ### Prerequisites
 - Mac or Linux machine
 - [Ollama](https://ollama.com) installed
