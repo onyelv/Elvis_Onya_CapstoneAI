@@ -44,7 +44,29 @@ Chef's Helper is an AI-powered recipe assistant that takes your craving, cuisine
 
 ---
 
-## How to Run
+## 🔄 How It Works
+
+​```mermaid
+flowchart TD
+    A[User opens Chef's Helper] --> B[Enter craving or ingredients]
+    B --> C[Select cuisine preference]
+    C --> D[Select dietary preference]
+    D --> E[Click 'Get My Recipe']
+    E --> F[Prompt sent to LLM via Ollama/Mistral]
+    F --> G[AI generates recipe + chef's tip]
+    G --> H[Recipe displayed to user]
+    H --> I{Save recipe?}
+    I -->|Yes| J[Recipe stored in Saved Recipes]
+    I -->|No| K[User can search again]
+
+    classDef inputStep fill:#D6F5D6,stroke:#2E7D32,stroke-width:1px,color:#1B5E20
+    classDef aiStep fill:#FFE9B3,stroke:#E6A400,stroke-width:1px,color:#7A5200
+    classDef outputStep fill:#CDE7FF,stroke:#1565C0,stroke-width:1px,color:#0D47A1
+
+    class A,B,C,D,E inputStep
+    class F,G aiStep
+    class H,I,J,K outputStep
+​```
 
 ### Prerequisites
 - Mac or Linux machine
