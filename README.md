@@ -1,4 +1,10 @@
-# 🍲 Chef's Helper — AI-Powered Recipe Assistant
+# 🍲 Chef's Helper — AI-Powered Recipe Assistant## 🎥 Demo
+
+Chef's Helper in action — enter what you're craving or the ingredients you have, pick a cuisine and dietary preference, and get an AI-generated recipe instantly.
+
+![Chef's Helper Demo](assets/chefs-helper-demo.gif)
+
+*From prompt to plated recipe: Chef's Helper takes your ingredients and preferences and generates a full recipe — including chef's tips — in seconds.*
 
 > CAP 942 Capstone Project | Per Scholas AI Solutions Developer Program 2026
 > Submitted by: Elvis Obinna Onya
