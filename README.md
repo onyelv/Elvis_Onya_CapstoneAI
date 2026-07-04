@@ -46,14 +46,14 @@ Chef's Helper is an AI-powered recipe assistant that takes your craving, cuisine
 
 ## 🔄 How It Works
 
-​```mermaid
+```mermaid
 flowchart TD
     A[User opens Chef's Helper] --> B[Enter craving or ingredients]
     B --> C[Select cuisine preference]
     C --> D[Select dietary preference]
-    D --> E[Click 'Get My Recipe']
+    D --> E[Click Get My Recipe button]
     E --> F[Prompt sent to LLM via Ollama/Mistral]
-    F --> G[AI generates recipe + chef's tip]
+    F --> G[AI generates recipe plus chef's tip]
     G --> H[Recipe displayed to user]
     H --> I{Save recipe?}
     I -->|Yes| J[Recipe stored in Saved Recipes]
@@ -66,7 +66,7 @@ flowchart TD
     class A,B,C,D,E inputStep
     class F,G aiStep
     class H,I,J,K outputStep
-​```
+```
 
 
 
